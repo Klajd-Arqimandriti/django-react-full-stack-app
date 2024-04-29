@@ -5,8 +5,27 @@ from django.utils import timezone
 
 # Create your models here.
 class Tire(models.Model):
+    rim = models.CharField(max_length=20, null=True, blank=True)
+    code = models.PositiveIntegerField(null=True, blank=True)
     brand = models.CharField(max_length=50, null=True, blank=True)
     pattern = models.CharField(max_length=50, null=True, blank=True)
+    tire_size = models.CharField(max_length=50, null=True, blank=True)
+    tire_size_1 = models.CharField(max_length=50, null=True, blank=True)
+    season = models.CharField(max_length=20, null=True, blank=True)
+    car_type = models.CharField(max_length=50, null=True, blank=True)
+    position = models.CharField(max_length=50, null=True, blank=True)
+    stock = models.PositiveIntegerField(default=0)
+    min_stock = models.PositiveIntegerField(default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=5, null=True, blank=True)
+    width = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    ratio = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    speed_index = models.CharField(max_length=5, null=True, blank=True)
+    location = models.CharField(max_length=50, null=True, blank=True)
+    reserved_amount = models.PositiveIntegerField(default=0)
+    manufacturing_date = models.DateField(null=True, blank=True)
+    origin = models.CharField(max_length=50, null=True, blank=True)
+    zip_code = models.CharField(max_length=10, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return f"{self.brand} {self.pattern}"

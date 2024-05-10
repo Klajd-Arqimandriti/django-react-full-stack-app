@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Tire, Transaction
-# from .models import ReservedTire, HotelTire
+from .models import Tire, Transaction, ReservedTire
+# from .models import HotelTire
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,10 +25,10 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = '__all__'
 
-# class ReservedTireSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ReservedTire
-#         fields = '__all__'
+class ReservedTireSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReservedTire
+        fields = '__all__'
 
 # class HotelTireSerializer(serializers.ModelSerializer):
 #     class Meta:

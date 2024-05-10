@@ -1,0 +1,74 @@
+/* TireExit.css */
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.paginationButton {
+    width: 10%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    font-weight: bold;
+}
+
+
+.tires-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px; /* This adds space between the items */
+    padding: 16px; /* Padding around the gallery */
+}
+
+.tire-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 0 1 calc(33.333% - 32px); /* Subtract the total gap from the width */
+    margin-bottom: 16px; /* Margin for the bottom of each product */
+}
+
+.tire-product img {
+    flex: 0 1 auto;
+    margin-right: 16px;
+}
+
+.tire-product .tire-info {
+    flex: 1;
+}
+
+.filters select, .filters input {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.filters {
+    margin-bottom: 20px;
+}
+
+.fade-in {.tires-product-filters {
+    -webkit-animation: fade-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: fade-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+
+
+.tires-product-filters form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tires-product-filters input[type="text"],
+.tires-product-filters select {
+    flex: 1;
+    max-width: 200px;
+}
+
+.tires-product-filters button {
+    flex: 0 0 auto;
+}}

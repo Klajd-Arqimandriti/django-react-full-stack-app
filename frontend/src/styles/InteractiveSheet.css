@@ -1,0 +1,155 @@
+.centerStyle {
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*align-content: center;*/
+    height: 100vh; /* Ensures the component takes up the full viewport height */
+}
+
+.columnSelectorList {
+    max-height: 200px; /* Set the maximum height of the list */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ccc; /* Add a border for visual clarity */
+    padding: 5px; /* Add some padding for spacing */
+}
+
+.labelElement {
+    font-size: 18px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+
+}
+
+.close-btn {
+    position: absolute;
+    top: 5%;
+    right: 10px;
+    width: 15%;
+    /*background: none; -> Makes the button invisible until hover */
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.confirm-changes-btn {
+    position: absolute;
+    top: 85%;
+    right: 10px;
+    width: 15%;
+    background-color: #d50000;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.confirm-changes-btn:hover {
+    background-color: darkred;
+}
+
+.buttons-area {
+    font-size: 18px;
+    padding: 5px 10px;
+    width: 100px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.excel-button, .pdf-button {
+    font-size: large;
+    font-weight: bold;
+}
+
+.apply-filters-button {
+    font-size: large;
+    font-weight: bold;
+}
+
+.confirm-changes-button {
+    font-size: large;
+    font-weight: bold;
+    background-color: #d50000;
+}
+
+.confirm-changes-button:hover {
+    background-color: darkred;
+}
+
+table {
+    border-collapse: collapse; /* Remove spacing between table cells */
+    width: 100%;
+    margin-left: 10px;
+}
+
+
+.list-container {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+.interactive-sheet-modal-content {
+    background-color: #1bbeb9;
+    padding: 40px;
+    border-radius: 5px;
+    height: 300px;
+    width: 400px; /* Adjust as needed */
+    color: white;
+    font-size: large;
+    font-weight: bold;
+}
+
+td {
+    padding: 8px; /* Adjust cell padding as needed */
+    line-height: 1.2; /* Set line-height to reduce spacing between rows */
+    border-bottom: 1px solid #ddd; /* Add a bottom border to separate rows */
+}
+
+/* Style for the selected option */
+select {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px; /* Set the width as needed */
+}
+
+/* Style for the dropdown arrow */
+select::after {
+    content: '\25BC'; /* Unicode for down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
+
+/* Style for the options in the dropdown */
+option:checked {
+    background-color: #00d3ff; /* Color for the selected option */
+}
+
+option {
+    width: 30px;
+}
+
+input.changed {
+    background-color: lightsalmon;
+}
+
+.pagination {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.paginationButton {
+    width: 10%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    font-weight: bold;
+}

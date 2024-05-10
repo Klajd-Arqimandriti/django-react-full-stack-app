@@ -1,0 +1,65 @@
+/* TireEntry.css */
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust as needed */
+}
+
+.form-box {
+    border: 1px solid #ddd;
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 300px;
+    margin: auto;
+    background-color: white;
+}
+
+input[type="text"], input[type="number"], select, button {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 12px;
+    margin-bottom: 20px; /* Increased spacing between elements */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block; /* Forces a new line */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button {
+    background-color: #4CAF50; /* Button color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker shade on hover */
+}
+
+/* Placeholder/Label Styling if needed */
+input::placeholder, select {
+    color: #888;
+    font-size: 16px;
+}
+
+.date-input {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /* Placeholder/Label Styling if needed */
+    &::placeholder {
+        color: #888;
+        font-size: 16px;
+    }
+}

@@ -5,18 +5,23 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+from .models import Tire
+from .models import ReservedTire
+from .models import Transaction
+from .models import HotelTire
+
 from .serializers import UserSerializer
+
 from .serializers import TireSerializer
 from .serializers import TransactionSerializer
 from .serializers import ReservedTireSerializer
+from .serializers import HotelTireSerializer
 
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Tire, ReservedTire, Transaction
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-
-# from .models import ReservedTire, HotelTire
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
@@ -136,6 +141,15 @@ def get_reserved_tires(request):
         return Response(reserved_serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+def get_hotel_tires(request):
+    if request.method == 'GET':
+        hotel_tires = HotelTire.objects.filter(amount__isnull=False, amount__gt=0)
+        hotel_serializer = HotelTireSerializer(hotel_tires, many=True)
+
+        return Response(hotel_serializer.data, status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 def reserve_tire(request, tire_id):
     if request.method == 'POST':
@@ -157,7 +171,9 @@ def reserve_tire(request, tire_id):
                 Transaction.objects.create(
                     tire_id=tire,
                     transaction_type='Reservation',
-                    tire_amount=reserved_quantity
+                    tire_amount=reserved_quantity,
+                    customer_name=contact_phone,
+                    contact_phone=contact_phone
                 )
 
                 ReservedTire.objects.create(

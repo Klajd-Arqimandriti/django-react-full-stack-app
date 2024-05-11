@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Warehouse from './pages/Warehouse';
 import TireReserve from './pages/TireReserve';
 import ReservedTires from './pages/ReservedTires';
+import TireHotel from './pages/TireHotel';
 
 function Logout() {
   localStorage.clear()
@@ -41,6 +42,7 @@ function App() {
         <Route path="/tire-exit" element={<TireExit />} />
         <Route path="/tire-reserve" element={<TireReserve />} />
         <Route path="/reserved-tires" element={<ReservedTires />} />
+        <Route path="/tire-hotel" element={<TireHotel />} />
         
         <Route path="/" element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>

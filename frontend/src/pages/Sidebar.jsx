@@ -1,5 +1,7 @@
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+// import { Button } from "@mui/material";
+
 import '../styles/Sidebar.css';
 
 const Sidebar = ( { isLoggedIn, adminIsLoggedIn }) => {
@@ -8,6 +10,7 @@ const Sidebar = ( { isLoggedIn, adminIsLoggedIn }) => {
             <h1>Protire Menu</h1>
             <ul>
                 <li><Link to="/tires">Tire Gallery</Link></li>
+                {/* <li><Button variant="contained">Tire Gallery</Button></li> */}
                 <li><Link to="/warehouse">Warehouse</Link></li>
                 {adminIsLoggedIn && <li><Link to="/edit-warehouse">Edit Warehouse</Link></li>}
                 <li><Link to="/tire-entry">Tire Entry</Link></li>

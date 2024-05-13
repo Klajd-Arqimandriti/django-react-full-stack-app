@@ -32,6 +32,7 @@ const ReservedTires = () => {
             try {
                 const token = localStorage.getItem("access");
                 const response = await fetch(reservedTiresURL, {
+                    method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'

@@ -318,7 +318,7 @@ function TireProduct( tire ) {
             <img src='/transparent-tire.png' alt="Tire" />
             {tire.tire.stock === 0 &&
                 <img
-                    src={import.meta.env.PUBLIC_URL + '/out-of-stock.png'}
+                    src="/out-of-stock.png"
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '150%', zIndex: 1 }}
                     alt="Out of Stock Image"
                 />
@@ -326,7 +326,7 @@ function TireProduct( tire ) {
 
             {tire.tire.stock < tire.tire.min_stock &&
                 <img
-                    src={import.meta.env.PUBLIC_URL + '/low-stock.png'}
+                    src="/low-stock.png"
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '150%', zIndex: 1 }}
                     alt="Out of Stock Image"
                 />

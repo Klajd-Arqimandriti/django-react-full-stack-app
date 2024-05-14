@@ -81,7 +81,7 @@ class ReservedTire(models.Model):
 
     def save(self, *args, **kwargs):
         created = not self.pk
-        super(Tire, self).save(*args, **kwargs)
+        super(ReservedTire, self).save(*args, **kwargs)
 
         Transaction.objects.create(
             tire_id=self,

@@ -47,6 +47,7 @@ function Tires() {
             if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
+            console.log(`Response: ${response}`);
             const fetchedTires = response.data;
             setTires(fetchedTires);
             console.log(`Tires: ${fetchedTires}`);

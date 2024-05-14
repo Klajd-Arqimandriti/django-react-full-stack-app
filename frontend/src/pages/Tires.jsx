@@ -23,8 +23,8 @@ function Tires() {
         location: '',
     });
 
-    const tiresURL = `${import.meta.env.VITE_API_URL}/api/tires/`;
-    const filterURL = `${import.meta.env.VITE_API_URL}/api/filter/`;
+    const tiresURL = "/api/tires/";
+    const filterURL = "/api/filter/";
 
     console.log(`Tires URL: ${tiresURL}`);
 
@@ -36,7 +36,8 @@ function Tires() {
         try {
             console.log(`Tires URL: ${tiresURL}`);
             const token = localStorage.getItem('access');
-    
+            
+            console.log(`API: ${api}`);
             const response = await api.get('/api/tires', {
                 headers: {
                     'Authorization': `Bearer ${token}`,

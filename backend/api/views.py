@@ -50,7 +50,7 @@ class TireDelete(generics.DestroyAPIView):
         tire_id = self.request.tire_id
         return Tire.objects.filter(id=tire_id)
     
-
+@csrf_exempt
 @api_view(['GET'])
 def filter_tires(request, reserved=False):
 
@@ -110,7 +110,7 @@ def filter_tires(request, reserved=False):
 
     return JsonResponse(serializer.data, safe=False)
 
-
+@csrf_exempt
 @api_view(['GET'])
 def get_reserved_tires(request):
     if request.method == 'GET':
@@ -140,7 +140,7 @@ def get_reserved_tires(request):
 
         return Response(reserved_serializer.data, status=status.HTTP_200_OK)
 
-
+@csrf_exempt
 @api_view(['GET'])
 def get_hotel_tires(request):
     if request.method == 'GET':
@@ -149,7 +149,7 @@ def get_hotel_tires(request):
 
         return Response(hotel_serializer.data, status=status.HTTP_200_OK)
 
-
+@csrf_exempt
 @api_view(['POST'])
 def reserve_tire(request, tire_id):
     if request.method == 'POST':
@@ -192,7 +192,7 @@ def reserve_tire(request, tire_id):
         print('This is a GET request.')
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
+@csrf_exempt
 @api_view(['POST'])
 def unreserve_tire(request, tire_id):
     if request.method == 'POST':
@@ -210,7 +210,7 @@ def unreserve_tire(request, tire_id):
         print('This is a GET request.')
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
-
+@csrf_exempt
 @api_view(['POST'])
 def sell_tire(request, tire_id):
     if request.method == 'POST':
@@ -272,7 +272,7 @@ def sell_tire(request, tire_id):
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
+@csrf_exempt
 @api_view(['POST'])
 def add_tire_stock(request, tire_id):
     if request.method == 'POST':

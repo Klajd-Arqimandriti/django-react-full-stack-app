@@ -86,7 +86,7 @@ class ReservedTire(models.Model):
         Transaction.objects.create(
             tire_id=self,
             transaction_type='Reservation',
-            tire_amount=self.stock,
+            tire_amount=self.reserved_amount,
             transaction_datetime=timezone.now()
         )
 

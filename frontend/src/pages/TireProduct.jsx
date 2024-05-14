@@ -4,6 +4,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
+import api from "../api";
+
 import { EU, US, DE, CN, SK } from 'country-flag-icons/react/3x2'
 import '../styles/TireProduct.css';
 
@@ -101,66 +103,48 @@ function TireProduct( tire ) {
 
     const sendTireToReserve = (tireId, reservedQuantity, customerName, contactPhone) => {
         let url = `/api/reserveTire/${tireId}/`;
-        const token = localStorage.getItem("access");
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ reservedQuantity, customerName, contactPhone}),
+        api.post(url, {
+            reservedQuantity,
+            customerName,
+            contactPhone
         })
-            .then(response => {
-                if (response.ok) {
-                    console.log(`Tire with ID ${tireId} sent to reserve`);
-                } else {
-                    console.error('Failed to send tire to reserve');
-                    console.log(response);
-                    console.log(`Response method: ${response.statusText}`);
-                }
-
-                console.log(url);
-            })
-            .then(() => {
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('Error sending tire to reserve:', error);
-            });
+        .then(response => {
+            if (response.status === 200) {
+                console.log(`Tire with ID ${tireId} sent to reserve`);
+            } else {
+                console.error('Failed to send tire to reserve');
+                console.log(response);
+                console.log(`Response method: ${response.statusText}`);
+            }
+            console.log(url);
+        })
+        .then(() => {
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error sending tire to reserve:', error);
+        });
     };
 
     const unReserveTire = (tireId) => {
         let url = `/api/unReserveTire/${tireId}/`;
-        const token = localStorage.getItem("access");
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            // You can pass additional data here if needed
-            // No additional data needed
+        api.post(url)
+        .then(response => {
+            if (response.status === 200) {
+                console.log(`Tire with ID ${tireId} successfully un-reserved`);
+            } else {
+                console.error('Failed to unreserve tire');
+                console.log(response);
+                console.log(`Response method: ${response.statusText}`);
+            }
+            console.log(url);
         })
-
-            .then(response => {
-                if(response.ok) {
-                    console.log(`Tire with ID ${tireId} successfully un-reserved`);
-                } else {
-                    // Handle error response from the server
-                    console.error('Failed to unreserve tire');
-                    console.log(response);
-                    console.log(`Response method: ${response.statusText}`);
-                }
-
-                console.log(url);
-            })
-            .then(() => {
-                window.location.reload();
-            })
-            .catch(error => {
-                // Handle fetch error
-                console.error('Error unreserving tire:', error);
-            });
+        .then(() => {
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error unreserving tire:', error);
+        });
     };
 
     const openStockPanel = () => {
@@ -204,42 +188,28 @@ function TireProduct( tire ) {
     const sendTireToSell = (tireId, sellQuantity, customerName, contactPhone) => {
         let url = `/api/sellTire/${tireId}/`;
         const token = localStorage.getItem("access");
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ sellQuantity, pathname, customerName, contactPhone}),
+        api.post(url, {
+            sellQuantity,
+            customerName,
+            contactPhone
         })
-            .then(response => {
-                if (response.ok) {
-                    console.log(`Tire with ID ${tireId} sold ${sellQuantity} pieces`);
-                } else {
-
-                    if (response.status === 400) {
-                        return response.json().then(data => {
-                            if (data.message === 'Invalid amount. Sell quantity exceeds stock quantity.') {
-                                toggleShowSellAmountExceedsStockAmountModal();
-                            }
-
-                            if (data.message === 'Invalid amount. Sell quantity exceeds reserved amount.') {
-                                toggleShowSellAmountExceedsReservedAmountModal();
-                            }
-                        })
+        .then(response => {
+            if (response.status === 200) {
+                console.log(`Tire with ID ${tireId} sold ${sellQuantity} pieces`);
+            } else if (response.status === 400) {
+                response.json().then(data => {
+                    if (data.message === 'Invalid amount. Sell quantity exceeds stock quantity.') {
+                        toggleShowSellAmountExceedsStockAmountModal();
                     }
-                }
-
-            })
-            // .then(() => {
-            //     window.location.reload();
-            // })
-            .catch(error => {
-                // Handle fetch error
-                console.error('Error selling tire:', error);
-            });
-
-
+                    if (data.message === 'Invalid amount. Sell quantity exceeds reserved amount.') {
+                        toggleShowSellAmountExceedsReservedAmountModal();
+                    }
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error selling tire:', error);
+        });
     };
 
     const sellTire = () => {
@@ -276,38 +246,28 @@ function TireProduct( tire ) {
     const addStockToTire = (tireId, stockQuantity) => {
         let url = `/api/addTireStock/${tireId}/`;
         const token = localStorage.getItem("access");
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            // You can pass additional data here if needed
-            body: JSON.stringify({ stockQuantity }),
+        api.post(url, {
+            stockQuantity
         })
-            .then(response => {
-                if (response.ok) {
-                    // Tire successfully sent to reserve
-                    console.log(`Tire with ID ${tireId} increased stock by ${stockQuantity} pieces`);
-                    // Update the UI or state accordingly
-                    // For example, remove the tire from the search results
-                } else {
-                    // Handle error response from the server
-                    console.error(`Failed to add stock to tire: ${tireId}`);
-                    console.log(response);
-                    console.log(`Response method: ${response.statusText}`);
-                }
-
-                console.log(url);
-            })
-            .then(() => {
-                window.location.reload();
-            })
-            .catch(error => {
-                // Handle fetch error
-                console.error('Error adding stock to tire:', error);
-            });
-
+        .then(response => {
+            if (response.status === 200) {
+                console.log(`Tire with ID ${tireId} increased stock by ${stockQuantity} pieces`);
+                // Update the UI or state accordingly
+                // For example, remove the tire from the search results
+            } else {
+                console.error(`Failed to add stock to tire: ${tireId}`);
+                console.log(response);
+                console.log(`Response method: ${response.statusText}`);
+            }
+            console.log(url);
+        })
+        .then(() => {
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error adding stock to tire:', error);
+        });
+    
         console.log(`Adding ${stockQuantity} of stock to tire with ID: ${tireId}`);
     };
 

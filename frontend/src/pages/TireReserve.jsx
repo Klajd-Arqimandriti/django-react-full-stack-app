@@ -39,30 +39,34 @@ const TireReserve = () => {
     const getNearOutOfStockStyle = (tire) => tire.stock <= 0.2 * tire.stock ? 'near-out-of-stock': '';
     const getNearMinimumStockStyle = (tire) => tire.stock <= 0.3 * tire.min_stock ? 'near-minimum-stock' : '';
 
-    useEffect(() => {
-        const fetchTires = async() => {
-            try {
-                const token = localStorage.getItem('access');
-                const response = await fetch(tiresURL, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error('Something went wrong!');
-                }
-
-                const fetchedTires = await response.json();
-                setTires(fetchedTires);
-                setIsLoading(false);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
+    useEffect(() => {        
         fetchTires();
-    }, []);
+    }, [tiresURL]);
+
+    const fetchTires = async () => {
+        try {
+            console.log(`Tires URL: ${tiresURL}`);
+            const token = localStorage.getItem('access');
+            
+            console.log(`API: ${api}`);
+            const response = await api.get('/api/tires/', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            if (!response.status === 200) {
+                throw new Error('Something went wrong!');
+            }
+            console.log(`Response: ${response}`);
+            const fetchedTires = response.data;
+            setTires(fetchedTires);
+            console.log(`Tires: ${fetchedTires}`);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const sendTireToReserve = (tireId) => {
         // Implement logic to send tire to reserve

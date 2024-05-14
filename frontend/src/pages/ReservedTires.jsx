@@ -27,31 +27,34 @@ const ReservedTires = () => {
     const reservedTiresURL = "/api/reserved_tires/";
     const filterURL = "/api/filter/reserved/";
 
-    useEffect(() => {
-        const fetchReservedTires = async() => {
-            try {
-                const token = localStorage.getItem("access");
-                const response = await fetch(reservedTiresURL, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Something went wrong!');
-                }
 
-                const fetchedReservedTires = await response.json();
-                setReservedTires(fetchedReservedTires);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
+    useEffect(() => {        
         fetchReservedTires();
-    }, []);
+    }, [tiresURL]);
+
+    const fetchReservedTires = async () => {
+        try {
+            const token = localStorage.getItem('access');
+            
+            console.log(`API: ${api}`);
+            const response = await api.get(reservedTiresURL, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            if (!response.status === 200) {
+                throw new Error('Something went wrong!');
+            }
+            console.log(`Response: ${response}`);
+            const fetchedReservedTires = response.data;
+            setReservedTires(fetchedReservedTires);
+            console.log(`Tires: ${fetchedTires}`);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const indexOfLastTire = currentPage * tiresPerPage;
     const indexOfFirstTire = indexOfLastTire - tiresPerPage;

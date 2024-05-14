@@ -28,8 +28,8 @@ const TireReserve = () => {
         ratio: ''
     });
 
-    const tiresURL = `${import.meta.env.VITE_API_URL}/api/tires/`;
-    const filterURL = `${import.meta.env.VITE_API_URL}/api/filter/`;
+    const tiresURL = "/api/tires/";
+    const filterURL = "/api/filter/";
 
     // const outOfStockStyle = reservedTire.stock <= 0 ? 'out-of-stock' : '';
     // const nearOutOfStock = 0 <= reservedTire.stock <= 0.2 * reservedTire.stock ? 'near-out-of-stock': '';

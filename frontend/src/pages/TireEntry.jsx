@@ -5,8 +5,8 @@ function TireEntry() {
     const [tireData, setTireData] = useState({});
     const [renderFields, setRenderFields] = useState([]);
 
-    const fieldsURL = `${import.meta.env.VITE_API_URL}/api/fields/`;
-    const createTireURL = `${import.meta.env.VITE_API_URL}/api/createTire/`;
+    const fieldsURL = "/api/fields/";
+    const createTireURL = "/api/createTire/";
 
     useEffect(() => {
         fetchFields();

@@ -23,7 +23,7 @@ function InteractiveSheet( isEditable ) {
     // const [confirmingChange, setConfirmingChange] = useState(false);
     // const [filters, setFilters] = useState({});
 
-    const filterURL = `${import.meta.env.VITE_API_URL}/api/filter/`;
+    const filterURL = "/api/filter/";
 
     const handleInputChange = (e, rowIndex, columnName) => {
         const {value} = e.target;
@@ -110,7 +110,7 @@ function InteractiveSheet( isEditable ) {
             try {
                 const filterParams = new URLSearchParams(selectedColumns).toString();
                 const token = localStorage.getItem('access');
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/tires/?page=${pageNumber}&limit=${tiresPerPage}&${filterParams}`, {
+                const response = await fetch(`/api/tires/?page=${pageNumber}&limit=${tiresPerPage}&${filterParams}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ function InteractiveSheet( isEditable ) {
 
 
     const downloadExcel = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/download_excel/`, {
+        const response = await fetch("/api/download_excel/", {
             method: 'POST',
             headers: {
                 'Content-Type': ' application/json',
@@ -176,7 +176,7 @@ function InteractiveSheet( isEditable ) {
     };
 
     const downloadPDF = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/download_pdf/`, {
+        const response = await fetch("/api/download_pdf/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -212,7 +212,7 @@ function InteractiveSheet( isEditable ) {
                 const value = tires[rowIndex][columnName];
                 const tireId = originalTires[rowIndex].id;
 
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/patchTires/${tireId}/`, {
+                const response = await fetch(`/api/patchTires/${tireId}/`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',

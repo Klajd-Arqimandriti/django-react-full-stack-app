@@ -100,7 +100,7 @@ function TireProduct( tire ) {
     const csrftoken = getCookie('csrftoken'); // Implement getCookie function to retrieve the CSRF token from cookies
 
     const sendTireToReserve = (tireId, reservedQuantity, customerName, contactPhone) => {
-        let url = `${import.meta.env.VITE_API_URL}/api/reserveTire/${tireId}/`;
+        let url = `/api/reserveTire/${tireId}/`;
         const token = localStorage.getItem("access");
         fetch(url, {
             method: 'POST',
@@ -130,7 +130,7 @@ function TireProduct( tire ) {
     };
 
     const unReserveTire = (tireId) => {
-        let url = `${import.meta.env.VITE_API_URL}/api/unReserveTire/${tireId}/`;
+        let url = `/api/unReserveTire/${tireId}/`;
         const token = localStorage.getItem("access");
         fetch(url, {
             method: 'POST',
@@ -202,7 +202,7 @@ function TireProduct( tire ) {
 
 
     const sendTireToSell = (tireId, sellQuantity, customerName, contactPhone) => {
-        let url = `${import.meta.env.VITE_API_URL}/api/sellTire/${tireId}/`;
+        let url = `/api/sellTire/${tireId}/`;
         const token = localStorage.getItem("access");
         fetch(url, {
             method: 'POST',
@@ -274,7 +274,7 @@ function TireProduct( tire ) {
     };
 
     const addStockToTire = (tireId, stockQuantity) => {
-        let url = `${import.meta.env.VITE_API_URL}/api/addTireStock/${tireId}/`;
+        let url = `/api/addTireStock/${tireId}/`;
         const token = localStorage.getItem("access");
         fetch(url, {
             method: 'POST',

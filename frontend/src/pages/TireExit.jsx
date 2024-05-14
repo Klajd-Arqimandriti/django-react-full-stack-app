@@ -26,8 +26,8 @@ function TireExit() {
         ratio: ''
     });
 
-    const tiresURL = `${import.meta.env.VITE_API_URL}/api/tires/`;
-    const filterURL = `${import.meta.env.VITE_API_URL}/api/filter/`;
+    const tiresURL = "/api/tires/";
+    const filterURL = "/api/filter/";
 
     useEffect(() => {
         fetchTires();

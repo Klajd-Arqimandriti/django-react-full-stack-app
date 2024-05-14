@@ -24,8 +24,8 @@ const ReservedTires = () => {
         customer_name: ''
     });
 
-    const reservedTiresURL = `${import.meta.env.VITE_API_URL}/api/reserved_tires/`;
-    const filterURL = `${import.meta.env.VITE_API_URL}/api/filter/reserved/`;
+    const reservedTiresURL = "/api/reserved_tires/";
+    const filterURL = "/api/filter/reserved/";
 
     useEffect(() => {
         const fetchReservedTires = async() => {

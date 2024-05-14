@@ -20,8 +20,8 @@ const TireHotel = () => {
         customer_name: '',
     })
 
-    const hotelTiresURL = `${import.meta.env.VITE_API_URL}/api/hotelTires/`;
-    const filterHotelURL = `${import.meta.env.VITE_API_URL}/api/hotelFilter/`;
+    const hotelTiresURL = `/api/hotelTires/`;
+    const filterHotelURL = `/api/hotelFilter/`;
 
     useEffect(() => {
 

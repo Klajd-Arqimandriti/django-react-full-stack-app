@@ -49,6 +49,7 @@ function Tires() {
             }
             const fetchedTires = response.data;
             setTires(fetchedTires);
+            console.log(`Tires: ${fetchedTires}`);
         } catch (error) {
             console.log(error);
         }

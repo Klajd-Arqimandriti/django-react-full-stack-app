@@ -5,6 +5,8 @@ import TireProduct from './TireProduct';
 import { handleFilterChange } from "../filterUtils";
 import { handleFilterSubmit } from "../filterUtils";
 
+import api from "../api";
+
 import '../styles/Tires.css';
 
 function Tires() {
@@ -34,26 +36,18 @@ function Tires() {
         try {
             console.log(`Tires URL: ${tiresURL}`);
             const token = localStorage.getItem('access');
-            
-            const response = await fetch(tiresURL, {
+    
+            const response = await api.get('/api/tires', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
-
-            if (!response.ok) {
+    
+            if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
-
-            const fetchedTires = await response.json();
-            // const parsedTires = fetchedTires.map(tire => ({
-            //     ...tire,
-            //     width: parseFloat(tire.width),
-            //     ratio: parseFloat(tire.ratio),
-            //     price: parseFloat(tire.price)
-            // }));
-
+            const fetchedTires = response.data;
             setTires(fetchedTires);
         } catch (error) {
             console.log(error);

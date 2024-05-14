@@ -32,7 +32,7 @@ const ReservedTires = () => {
 
     useEffect(() => {        
         fetchReservedTires();
-    }, [tiresURL]);
+    }, [reservedTiresURL]);
 
     const fetchReservedTires = async () => {
         try {

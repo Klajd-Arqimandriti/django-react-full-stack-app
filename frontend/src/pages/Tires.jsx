@@ -38,7 +38,7 @@ function Tires() {
             const token = localStorage.getItem('access');
             
             console.log(`API: ${api}`);
-            const response = await api.get('/api/tires', {
+            const response = await api.get('/api/tires/', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

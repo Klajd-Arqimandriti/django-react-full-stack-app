@@ -84,7 +84,7 @@ class ReservedTire(models.Model):
         super(ReservedTire, self).save(*args, **kwargs)
 
         Transaction.objects.create(
-            tire_id=self,
+            tire_id=self.tire,
             transaction_type='Reservation',
             tire_amount=self.reserved_amount,
             transaction_datetime=timezone.now()

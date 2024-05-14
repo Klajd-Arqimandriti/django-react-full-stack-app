@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import '../styles/TireReserve.css';
 import '../styles/TireProduct.css';
 
+import api from "../api";
+
 import { handleFilterChange } from "../filterUtils";
 import { handleFilterSubmit } from "../filterUtils";
 import TireProduct from "./TireProduct";

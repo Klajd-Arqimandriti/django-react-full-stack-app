@@ -1,57 +1,48 @@
-// TireExit.js
-// import React from 'react';
 import {useEffect, useState} from 'react';
-import {handleFilterChange, handleFilterSubmit} from "../filterUtils";
-import TireProduct from "./TireProduct";
+import { handleFilterChange } from "./filterUtils";
+import { handleFilterSubmit } from "./filterUtils";
 
-import api from "../api";
+import '../styles/AddStock.css';
+import TireProduct from './TireProduct';
 
-import '../styles/TireExit.css';
+const AddStock = () => {
 
-function TireExit() {
     const [tires, setTires] = useState([]);
-    // const [searchTerm, setSearchTerm] = useState('');
-    // const [searchResults, setSearchResults] = useState([]);
-    // const [isLoading, setIsLoading] = useState(true);
-
     const [currentPage, setCurrentPage] = useState(1);
     const [tiresPerPage] = useState(20);
 
+    const tiresURL = '/api/tires/';
+    const filterURL = '/api/filter/';
+
     const [filters, setFilters] = useState({
-        tire_size_1: '',
-        tire_size: '',
         brand: '',
-        pattern: '',
+        rim: '',
         code: '',
+        pattern: '',
+        tire_size: '',
+        car_type: '',
         location: '',
+        width: '',
+        ratio: ''
     });
 
-    const tiresURL = "/api/tires/";
-    const filterURL = "/api/filter/";
+    useEffect(() => {
 
-    useEffect(() => {        
-        fetchTires();
-    }, [tiresURL]);
-
-    const fetchTires = async () => {
-        try {
-            const token = localStorage.getItem('access');
-            const response = await api.get(tiresURL, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+        const fetchTires = async () => {
+            try {
+                const response = await api.get(tiresURL);
+                if (!response.ok) {
+                    throw new Error('Something went wrong!');
                 }
-            });
-    
-            if (!response.status === 200) {
-                throw new Error('Something went wrong!');
+
+                const fetchedTires = await response.json();
+                setTires(fetchedTires);
+            } catch (error) {
+                console.log(error);
             }
-            const fetchedTires = response.data;
-            setTires(fetchedTires);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        };
+        fetchTires();
+    }, []);
 
     const indexOfLastTire = currentPage * tiresPerPage;
     const indexOfFirstTire = indexOfLastTire - tiresPerPage;
@@ -62,8 +53,10 @@ function TireExit() {
         pageNumbers.push(i);
     }
 
+    // Rest of your component for searching and adding stock...
     return (
-        <div className="tires-product-page">
+        <div>
+
             <div className="tires-product-filters">
                 <form onSubmit={(e) => handleFilterSubmit(e, filters, setTires, filterURL)}>
 
@@ -73,8 +66,8 @@ function TireExit() {
                     <input type="text" name="code" value={filters.code} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Code" />
                     <input type="text" name="brand" value={filters.brand} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Brand" />
                     <input type="text" name="pattern" value={filters.pattern} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Pattern" />
-                    <input type="text" name="tire_size" value={filters.tire_size} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size" />
-                    <input type="text" name="tire_size_1" value={filters.tire_size_1} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size 1" />
+                    <input type="text" name="width" value={filters.width} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Width" />
+                    <input type="text" name="ratio" value={filters.ratio} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Ratio" />
 
                     {/* Add dropdown menus for additional filters */}
                     <select name="season" value={filters.season} onChange={(e) => handleFilterChange(e, filters, setFilters)}>
@@ -127,4 +120,4 @@ function TireExit() {
     );
 };
 
-export default TireExit;
+export default AddStock;

@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
+import api from '../api';
+
 import '../styles/TireEntry.css';
+
 
 function TireEntry() {
     const [tireData, setTireData] = useState({});
@@ -15,13 +18,13 @@ function TireEntry() {
     const fetchFields = async() => {
         try {
             const token = localStorage.getItem('access');
-            const response = await fetch(fieldsURL, {
+            const response = await api.get(fieldsURL, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
-            if (!response.ok) {
+            if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
 
@@ -49,7 +52,7 @@ function TireEntry() {
         e.preventDefault();
 
         try {
-            const response = await fetch(createTireURL, {
+            const response = await api.get(createTireURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

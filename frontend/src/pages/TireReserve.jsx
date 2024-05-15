@@ -17,17 +17,14 @@ const TireReserve = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [tiresPerPage] = useState(20);
-
+    
     const [filters, setFilters] = useState({
-        brand: '',
-        rim: '',
-        code: '',
-        pattern: '',
+        tire_size_1: '',
         tire_size: '',
-        car_type: '',
+        brand: '',
+        pattern: '',
+        code: '',
         location: '',
-        width: '',
-        ratio: ''
     });
 
     const tiresURL = "/api/tires/";
@@ -94,8 +91,8 @@ const TireReserve = () => {
                     <input type="text" name="code" value={filters.code} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Code" />
                     <input type="text" name="brand" value={filters.brand} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Brand" />
                     <input type="text" name="pattern" value={filters.pattern} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Pattern" />
-                    <input type="text" name="width" value={filters.width} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Width" />
-                    <input type="text" name="ratio" value={filters.ratio} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Ratio" />
+                    <input type="text" name="tire_size" value={filters.tire_size} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size" />
+                    <input type="text" name="tire_size_1" value={filters.tire_size_1} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size 1" />
 
                     {/* Add dropdown menus for additional filters */}
                     <select name="season" value={filters.season} onChange={(e) => handleFilterChange(e, filters, setFilters)}>

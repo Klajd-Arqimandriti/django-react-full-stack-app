@@ -1,0 +1,12 @@
+.tire-entry-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tire-entry-options button {
+    width: 100px;
+
+    font-size: large;
+
+}

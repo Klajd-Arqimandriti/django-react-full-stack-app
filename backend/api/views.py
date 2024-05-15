@@ -50,63 +50,63 @@ class TireDelete(generics.DestroyAPIView):
         tire_id = self.request.tire_id
         return Tire.objects.filter(id=tire_id)
     
+
 @csrf_exempt
 @api_view(['GET'])
 def filter_tires(request, reserved=False):
 
     # Text input based filtering
-    rim = request.query_params.get('rim')
-    code = request.query_params.get('code')
-    brand = request.query_params.get('brand')
-    pattern = request.query_params.get('pattern')
-    tire_size = request.query_params.get('tire_size')
-    tire_size_1 = request.query_params.get('tire_size_1')
-
-    # customer_name = None
-    # if 'customer_name' in request.query_params:
-    #     customer_name = request.query_params.get('customer_name')
-    #     print(f"Customer Name: {customer_name}")
-
-    # Dropdown input based filtering
-    season = request.query_params.get('season')
-    car_type = request.query_params.get('car_type')
-    location = request.query_params.get('location')
-
-    if 'tire-reserve' in request.path:
+    if 'filter/reserved/' in request.path:
+        location = request.query_params.get('location')
+        customer_name = request.query_params.get('customer_name')
+        print(f"Customer Name: {customer_name}")
         reserved = True
+    else:
+        rim = request.query_params.get('rim')
+        code = request.query_params.get('code')
+        brand = request.query_params.get('brand')
+        pattern = request.query_params.get('pattern')
+        tire_size = request.query_params.get('tire_size')
+        tire_size_1 = request.query_params.get('tire_size_1')
+
+        # Dropdown input based filtering
+        season = request.query_params.get('season')
+        car_type = request.query_params.get('car_type')
+        location = request.query_params.get('location')
 
     if not reserved:
         queryset = Tire.objects.all()
-    else:
-        queryset = Tire.objects.filter(reserved_amount__gt=0)
+        if rim:
+            queryset = queryset.filter(rim__istartswith=rim)
+        if code:
+            queryset = queryset.filter(code__istartswith=code)
+        if brand:
+            queryset = queryset.filter(brand__istartswith=brand)
+        if pattern:
+            queryset = queryset.filter(pattern__istartswith=pattern)
+        if tire_size:
+            queryset = queryset.filter(tire_size__istartswith=tire_size)
+        if tire_size_1:
+            queryset = queryset.filter(tire_size_1__istartswith=tire_size_1)
 
-    if rim:
-        queryset = queryset.filter(rim__istartswith=rim)
-    if code:
-        queryset = queryset.filter(code__istartswith=code)
-    if brand:
-        queryset = queryset.filter(brand__istartswith=brand)
-    if pattern:
-        queryset = queryset.filter(pattern__istartswith=pattern)
-    if tire_size:
-        queryset = queryset.filter(tire_size__istartswith=tire_size)
-    if tire_size_1:
-        queryset = queryset.filter(tire_size_1__istartswith=tire_size_1)
+        # Dropdown input based filtering
+        if season:
+            queryset = queryset.filter(season__istartswith=season)
+        if car_type:
+            queryset = queryset.filter(car_type__istartswith=car_type)
+        if location:
+            queryset = queryset.filter(location__istartswith=location)            
 
-    # if customer_name:
-    #     queryset = queryset.filter(customer_name__istartswith=customer_name)
-
-    if season:
-        queryset = queryset.filter(season__istartswith=season)
-    if car_type:
-        queryset = queryset.filter(car_type__istartswith=car_type)
-    if location:
-        queryset = queryset.filter(location__istartswith=location)
-
-    if reserved:
-        serializer = ReservedTireSerializer(queryset, many=True)
-    else:
         serializer = TireSerializer(queryset, many=True)
+
+    else:
+        queryset = ReservedTire.objects.all()
+        if location:
+            queryset = queryset.filter(location__istartswith=location)
+        if customer_name:
+            queryset = queryset.filter(customer_name__icontains=customer_name)
+
+        serializer = ReservedTireSerializer(queryset, many=True)
 
     return JsonResponse(serializer.data, safe=False)
 

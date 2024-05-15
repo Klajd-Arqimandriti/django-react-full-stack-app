@@ -15,7 +15,8 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+dotenv_path = Path(__file__).resolve().parent.parent / ".env.develop"
+load_dotenv(dotenv_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-37(pnv52t(+g1(tee*ro1f-#54zjmgo#-^ugkz9=-6pm^5%6$8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -107,7 +108,6 @@ DATABASES = {
 }
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -152,9 +152,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://d7727e30-e28b-4803-8dbf-cf7eb26bc0d1.e1-eu-north-azure.choreoapps.dev/",  # Frontend URL
-]
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True

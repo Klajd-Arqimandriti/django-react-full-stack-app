@@ -33,7 +33,6 @@ function Tires() {
     const fetchTires = async () => {
         try {
             const token = localStorage.getItem('access');
-            console.log(`Tires Token: ${token}`);
             const response = await api.get(tiresURL, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -44,10 +43,8 @@ function Tires() {
             if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
-            console.log(`Response: ${response}`);
             const fetchedTires = response.data;
             setTires(fetchedTires);
-            console.log(`Tires: ${fetchedTires}`);
         } catch (error) {
             console.log(error);
         }

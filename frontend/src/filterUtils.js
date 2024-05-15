@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "./api";
 
 export const handleFilterChange = (e, filters, setFilters) => {
     const { name, value } = e.target;
@@ -21,7 +22,7 @@ export const handleInteractiveSheetFilterChange = (e, key, selectedColumns, setS
 export const handleFilterSubmit = async (e, filters, setTires, url) => {
     e.preventDefault();
     try {
-        const response = await axios.get(url, {
+        const response = await api.get(url, {
             params: filters,
         });
 

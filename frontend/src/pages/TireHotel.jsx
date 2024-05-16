@@ -9,13 +9,16 @@ import { handleFilterSubmit } from "../filterUtils";
 
 import '../styles/TireHotel.css';
 import '../styles/Tires.css';
+
 import TireProduct from "./TireProduct";
+import HotelTireProduct from "./HotelTireProduct";
+
 
 const TireHotel = () => {
     // const navigate = useNavigate();
     const [hotelTires, setHotelTires] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [tiresPerPage] = useState(20);
+    const [hotelTiresPerPage] = useState(20);
 
 
     const [filters, setFilters] = useState({
@@ -33,7 +36,7 @@ const TireHotel = () => {
 
     useEffect(() => {
         fetchHotelTires();
-    }, []);
+    }, [hotelTiresURL]);
     
     const fetchHotelTires = async () => {
         try {
@@ -45,42 +48,67 @@ const TireHotel = () => {
                     'Content-Type': 'application/json'
                 },
             });
-            if (!response.ok) {
+
+            if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
 
-            const fetchedHotelTires = await response.json();
+            const fetchedHotelTires = await response.data;
             setHotelTires(fetchedHotelTires);
-            // setIsLoading(false);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const indexOfLastTire = currentPage * tiresPerPage;
-    const indexOfFirstTire = indexOfLastTire - tiresPerPage;
-    const currentTires = hotelTires.slice(indexOfFirstTire, indexOfLastTire);
+    const indexOfLastHotelTire = currentPage * hotelTiresPerPage;
+    const indexOfFirsHoteltTire = indexOfLastHotelTire - hotelTiresPerPage;
+    const currentHotelTires = hotelTires.slice(indexOfFirsHoteltTire, indexOfLastHotelTire);
 
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(hotelTires.length / tiresPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(hotelTires.length / hotelTiresPerPage); i++) {
         pageNumbers.push(i);
     }
 
     return (
         <div className="tires-product-page">
-            <div className="tires-product-filters">
-                <form onSubmit={(e) => handleFilterSubmit(e, setHotelFilters, setHotelTires(), filterHotelURL)}>
+                <div className="tires-product-filters">
+                    <form onSubmit={(e) => handleFilterSubmit(e, filters, setReservedTires, filterURL)}>
 
-                    {/* Text based filters */}
-                    <input type="text" name="rim" value={filters.rim} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Rim" />
-                    <input type="text" name="code" value={filters.code} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Code" />
-                    <input type="text" name="brand" value={filters.brand} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Brand" />
-                    <input type="text" name="pattern" value={filters.pattern} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Pattern" />
-                    <input type="text" name="tire_size" value={filters.tire_size} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size" />
-                    <input type="text" name="tire_size_1" value={filters.tire_size_1} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size 1" />
-                    <input type="text" name="customer_name" value={filters.customer_name} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Customer Name" />
+                        {/* Text based filters */}
+                        <input type="text" name="location" value={filters.location} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Location" />
+                        <input type="text" name="customer_name" value={filters.customer_name} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Customer Name" />
 
-                </form>
+                        {/* Add dropdown menus for additional filters */}
+                        <select name="season" value={filters.season} onChange={(e) => handleFilterChange(e, filters, setFilters)}>
+                            <optgroup label="Season">
+                                <option value="summer">SUMMER</option>
+                                <option value="all season">ALL SEASON</option>
+                                <option value="winter">WINTER</option>
+
+                                <option value="all terrain">ALL TERRAIN</option>
+                                <option value="semi slick">SEMI SLICK</option>
+                                <option value="all terrain">ALL TERRAIN</option>
+                            </optgroup>
+                        </select>
+
+                        <select name="carType" value={filters.car_type} onChange={(e) => handleFilterChange(e, filters, setFilters)}>
+                            <optgroup label="Car Type">
+                                <option value="passenger">PASSENGER</option>
+                                <option value="light track">LIGHT TRACK</option>
+                                <option value="4x4">4x4</option>
+                            </optgroup>
+                        </select>
+
+                        <select name="location" value={filters.location} onChange={(e) => handleFilterChange(e, filters, setFilters)}>
+                            <optgroup label='Location'>
+                                <option value="kamez">KAMEZ</option>
+                                <option value="protire">PROTIRE</option>
+                                <option value="zallherr">ZALLHERR</option>
+                            </optgroup>
+
+                        </select>
+                        <button type="submit">Apply Filters</button>
+                    </form>
                     {hotelTires.length === 0 && <h1>No Hotel tires Found</h1>}
             </div>
 
@@ -90,8 +118,8 @@ const TireHotel = () => {
 
 
             <div className="tires-gallery">
-                {currentTires.map(tire => (
-                    <TireProduct key={tire.id} tire={tire} />
+                {currentHotelTires.map(hotelTire => (
+                    <HotelTireProduct key={hotelTire.id} hotelTire={hotelTire} />
                 ))}
             </div>
             <ul className="pagination">

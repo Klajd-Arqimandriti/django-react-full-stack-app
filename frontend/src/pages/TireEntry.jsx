@@ -15,7 +15,7 @@ function TireEntry() {
         fetchFields();
     }, [fieldsURL]);
 
-    const fetchFields = async() => {
+    const fetchFields = async () => {
         try {
             const token = localStorage.getItem('access');
             const response = await api.get(fieldsURL, {
@@ -28,7 +28,7 @@ function TireEntry() {
                 throw new Error('Something went wrong!');
             }
 
-            const fetchedFields = await response.json();
+            const fetchedFields = await response.data;
 
             const mappedFields = fetchedFields.map(field => ({
                 name: field.name,
@@ -44,7 +44,12 @@ function TireEntry() {
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
+
+        if (type === 'number' && (isNaN(parseFloat(value)) || parseFloat(value) <= 0)) {
+            return;
+        }
+
         setTireData({ ...tireData, [name]: value });
     };
 
@@ -75,8 +80,8 @@ function TireEntry() {
         <div className='form-container'>
             <div className='form-box'>
                 <form onSubmit={handleSubmit}>
-                    {renderFields.map(field => (
-                        <div key={field.name}>
+                    {renderFields.map((field, index) => (
+                        <div key={`${field.name}-${index}`}>
                             {field.name === 'season' &&
                                 <select name={field.name} onChange={handleChange}>
                                     <optgroup label="Season">
@@ -107,8 +112,12 @@ function TireEntry() {
                                 </select>
                             }
 
-                            {field.name !== 'season' && field.name !== 'car_type' && field.name !== 'location' &&
-                                <input key={field.name} type={field.type} name={field.name} placeholder={field.placeholder} onChange={handleChange}/>
+                            {field.name !== 'season' && field.name !== 'car_type' && field.name !== 'location' && field.type === 'number' &&
+                                <input type={field.type} min="0" name={field.name} placeholder={field.placeholder} onChange={handleChange} />
+                            }
+
+                            {field.name !== 'season' && field.name !== 'car_type' && field.name !== 'location' && field.type !== 'number' &&
+                                <input type={field.type} name={field.name} placeholder={field.placeholder} onChange={handleChange} />
                             }
                         </div>
                     ))}

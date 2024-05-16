@@ -49,18 +49,59 @@ class TireDelete(generics.DestroyAPIView):
     def get_queryset(self):
         tire_id = self.request.tire_id
         return Tire.objects.filter(id=tire_id)
-    
+
+
+@api_view(['POST'])
+def create_tire(request):
+    if request.method == 'POST':
+        serializer = TireSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def create_hotel_tire(request):
+    if request.method == 'POST':
+        serializer = HotelTireSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH'])
+def update_tire(request):
+    if request.method == 'PATCH':
+        try:
+            tire_id = request.data.get('id')
+            tire = Tire.objects.get(id=tire_id)
+            serializer = TireSerializer(tire, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Tire.DoesNotExist:
+            return Response({'message': 'Tire not found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @csrf_exempt
 @api_view(['GET'])
 def filter_tires(request, reserved=False):
+    reserved = False
+    hotel = False
 
     # Text input based filtering
-    if 'filter/reserved/' in request.path:
+    if 'filter/reserved/' in request.path or 'filter/hotel/' in request.path:
         location = request.query_params.get('location')
         customer_name = request.query_params.get('customer_name')
-        print(f"Customer Name: {customer_name}")
-        reserved = True
+    
+        if 'filter/reserved/' in request.path:
+            reserved = True
+        else:
+            hotel = True
+
     else:
         rim = request.query_params.get('rim')
         code = request.query_params.get('code')
@@ -74,41 +115,49 @@ def filter_tires(request, reserved=False):
         car_type = request.query_params.get('car_type')
         location = request.query_params.get('location')
 
-    if not reserved:
-        queryset = Tire.objects.all()
-        if rim:
-            queryset = queryset.filter(rim__istartswith=rim)
-        if code:
-            queryset = queryset.filter(code__istartswith=code)
-        if brand:
-            queryset = queryset.filter(brand__istartswith=brand)
-        if pattern:
-            queryset = queryset.filter(pattern__istartswith=pattern)
-        if tire_size:
-            queryset = queryset.filter(tire_size__istartswith=tire_size)
-        if tire_size_1:
-            queryset = queryset.filter(tire_size_1__istartswith=tire_size_1)
+    if reserved or hotel:
 
-        # Dropdown input based filtering
-        if season:
-            queryset = queryset.filter(season__istartswith=season)
-        if car_type:
-            queryset = queryset.filter(car_type__istartswith=car_type)
+        if reserved:
+            queryset = ReservedTire.objects.all()
+        else:
+            queryset = HotelTire.objects.all()
+
         if location:
-            queryset = queryset.filter(location__istartswith=location)            
-
-        serializer = TireSerializer(queryset, many=True)
-
-    else:
-        queryset = ReservedTire.objects.all()
-        if location:
-            queryset = queryset.filter(location__istartswith=location)
+            queryset = queryset.filter(location__icontains=location)
         if customer_name:
             queryset = queryset.filter(customer_name__icontains=customer_name)
 
-        serializer = ReservedTireSerializer(queryset, many=True)
+        if reserved:
+            serializer = ReservedTireSerializer(queryset, many=True)
+        else:
+            serializer = HotelTireSerializer(queryset, many=True)
+    else:
+        queryset = Tire.objects.all()
+        if rim:
+            queryset = queryset.filter(rim__icontains=rim)
+        if code:
+            queryset = queryset.filter(code__icontains=code)
+        if brand:
+            queryset = queryset.filter(brand__icontains=brand)
+        if pattern:
+            queryset = queryset.filter(pattern__icontains=pattern)
+        if tire_size:
+            queryset = queryset.filter(tire_size__icontains=tire_size)
+        if tire_size_1:
+            queryset = queryset.filter(tire_size_1__icontains=tire_size_1)
+
+        # Dropdown input based filtering
+        if season:
+            queryset = queryset.filter(season__icontains=season)
+        if car_type:
+            queryset = queryset.filter(car_type__icontains=car_type)
+        if location:
+            queryset = queryset.filter(location__icontains=location)            
+
+        serializer = TireSerializer(queryset, many=True)
 
     return JsonResponse(serializer.data, safe=False)
+
 
 @csrf_exempt
 @api_view(['GET'])
@@ -140,6 +189,7 @@ def get_reserved_tires(request):
 
         return Response(reserved_serializer.data, status=status.HTTP_200_OK)
 
+
 @csrf_exempt
 @api_view(['GET'])
 def get_hotel_tires(request):
@@ -148,6 +198,7 @@ def get_hotel_tires(request):
         hotel_serializer = HotelTireSerializer(hotel_tires, many=True)
 
         return Response(hotel_serializer.data, status=status.HTTP_200_OK)
+
 
 @csrf_exempt
 @api_view(['POST'])
@@ -192,6 +243,7 @@ def reserve_tire(request, tire_id):
         print('This is a GET request.')
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
 @csrf_exempt
 @api_view(['POST'])
 def unreserve_tire(request, tire_id):
@@ -210,7 +262,22 @@ def unreserve_tire(request, tire_id):
     else:
         print('This is a GET request.')
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+
+
+@csrf_exempt
+@api_view(['POST'])
+def remove_hotel_tire(request, tire_id):
+    if request.method == 'POST':
+        try:
+            hotel_tire = HotelTire.objects.get(id=tire_id)
+            hotel_tire.delete()
+            return Response({'message': f'Hotel tire with ID {tire_id} successfully removed'}, status=status.HTTP_200_OK)
+        except HotelTire.DoesNotExist:
+            return Response({'message': 'Hotel tire not found'}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
 @csrf_exempt
 @api_view(['POST'])
 def sell_tire(request, tire_id):
@@ -273,10 +340,11 @@ def sell_tire(request, tire_id):
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
 @csrf_exempt
-@api_view(['POST'])
+@api_view(['PATCH'])
 def add_tire_stock(request, tire_id):
-    if request.method == 'POST':
+    if request.method == 'PATCH':
         try:
             tire = Tire.objects.get(id=tire_id)
             stock_quantity = int(request.data.get('stockQuantity'))

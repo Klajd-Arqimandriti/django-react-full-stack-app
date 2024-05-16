@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
-import { handleFilterChange } from "./filterUtils";
-import { handleFilterSubmit } from "./filterUtils";
+import { handleFilterChange } from "../filterUtils";
+import { handleFilterSubmit } from "../filterUtils";
+
+import api from '../api';
 
 import '../styles/AddStock.css';
 import TireProduct from './TireProduct';
@@ -23,22 +25,29 @@ const AddStock = () => {
     });
 
     useEffect(() => {
-
-        const fetchTires = async () => {
-            try {
-                const response = await api.get(tiresURL);
-                if (!response.ok) {
-                    throw new Error('Something went wrong!');
-                }
-
-                const fetchedTires = await response.json();
-                setTires(fetchedTires);
-            } catch (error) {
-                console.log(error);
-            }
-        };
         fetchTires();
-    }, []);
+    }, [tiresURL]);
+
+    const fetchTires = async () => {
+        try {
+            const token = localStorage.getItem('access');
+            const response = await api.get(tiresURL, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.status === 200) {
+                throw new Error('Something went wrong!');
+            }
+
+            const fetchedTires = await response.data;
+            setTires(fetchedTires);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const indexOfLastTire = currentPage * tiresPerPage;
     const indexOfFirstTire = indexOfLastTire - tiresPerPage;

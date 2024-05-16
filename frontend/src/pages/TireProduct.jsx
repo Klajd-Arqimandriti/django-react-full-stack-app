@@ -1,7 +1,6 @@
 // import React from 'react';
 // import { useEffect } from 'react';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
 import api from "../api";
@@ -84,22 +83,22 @@ function TireProduct( tire ) {
         "Slovakia": <SK title="Slovakia" className="flag-svg"/>
     };
 
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
+    // function getCookie(name) {
+    //     let cookieValue = null;
+    //     if (document.cookie && document.cookie !== '') {
+    //         const cookies = document.cookie.split(';');
+    //         for (let i = 0; i < cookies.length; i++) {
+    //             const cookie = cookies[i].trim();
+    //             if (cookie.startsWith(name + '=')) {
+    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return cookieValue;
+    // }
 
-    const csrftoken = getCookie('csrftoken'); // Implement getCookie function to retrieve the CSRF token from cookies
+    // const csrftoken = getCookie('csrftoken'); // Implement getCookie function to retrieve the CSRF token from cookies
 
     const sendTireToReserve = (tireId, reservedQuantity, customerName, contactPhone) => {
         let url = `/api/reserveTire/${tireId}/`;
@@ -207,6 +206,9 @@ function TireProduct( tire ) {
                 });
             }
         })
+        .then(() => {
+            window.location.reload();
+        })
         .catch(error => {
             console.error('Error selling tire:', error);
         });
@@ -246,7 +248,7 @@ function TireProduct( tire ) {
     const addStockToTire = (tireId, stockQuantity) => {
         let url = `/api/addTireStock/${tireId}/`;
         const token = localStorage.getItem("access");
-        api.post(url, {
+        api.patch(url, {
             stockQuantity
         })
         .then(response => {
@@ -502,30 +504,5 @@ function TireProduct( tire ) {
         </div>
     );
 };
-
-// TireProduct.propTypes = {
-//     tire: PropTypes.shape({
-//         stock: PropTypes.any,
-//         min_stock: PropTypes.any,
-//         pattern: PropTypes.any,
-//         brand: PropTypes.any,
-//         season: PropTypes.any,
-//         car_type: PropTypes.any,
-//         width: PropTypes.any,
-//         ratio: PropTypes.any,
-//         rim: PropTypes.any,
-//         code: PropTypes.any,
-//         price: PropTypes.any,
-//         reserved_amount: PropTypes.any,
-//         customer_name: PropTypes.any,
-//         contact_phone: PropTypes.any,
-//         location: PropTypes.any,
-//         id: PropTypes.any,
-//         zip_code: PropTypes.any,
-//         country: PropTypes.any,
-//         origin: PropTypes.any,
-//     }).isRequired,
-//     reservedTire: PropTypes.object,
-// };
 
 export default TireProduct;

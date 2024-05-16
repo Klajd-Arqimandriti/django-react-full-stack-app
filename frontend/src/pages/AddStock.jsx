@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/TireReserve.css';
-import '../styles/TireProduct.css';
-
-import api from "../api";
-
+import {useEffect, useState} from 'react';
 import { handleFilterChange } from "../filterUtils";
 import { handleFilterSubmit } from "../filterUtils";
-import TireProduct from "./TireProduct";
 
+import api from '../api';
 
-const TireReserve = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
-    const [searchResults, setSearchResults] = useState([]);
+import '../styles/AddStock.css';
+import TireProduct from './TireProduct';
+
+const AddStock = () => {
+
     const [tires, setTires] = useState([]);
-
     const [currentPage, setCurrentPage] = useState(1);
     const [tiresPerPage] = useState(20);
-    
+
+    const tiresURL = '/api/tires/';
+    const filterURL = '/api/filter/';
     const [filters, setFilters] = useState({
         tire_size_1: '',
         tire_size: '',
@@ -27,49 +24,29 @@ const TireReserve = () => {
         location: '',
     });
 
-    const tiresURL = "/api/tires/";
-    const filterURL = "/api/filter/";
-
-    // const outOfStockStyle = reservedTire.stock <= 0 ? 'out-of-stock' : '';
-    // const nearOutOfStock = 0 <= reservedTire.stock <= 0.2 * reservedTire.stock ? 'near-out-of-stock': '';
-    // const nearMinimumStockStyle = 0 <= reservedTire.stock <= 0.3 * reservedTire.min_stock ? 'near-minimum-stock' : '';
-
-    const getOutOfStockStyle = (tire) => tire.stock <= 0 ? 'out-of-stock' : '';
-    const getNearOutOfStockStyle = (tire) => tire.stock <= 0.2 * tire.stock ? 'near-out-of-stock': '';
-    const getNearMinimumStockStyle = (tire) => tire.stock <= 0.3 * tire.min_stock ? 'near-minimum-stock' : '';
-
-    useEffect(() => {        
+    useEffect(() => {
         fetchTires();
     }, [tiresURL]);
 
     const fetchTires = async () => {
         try {
-            console.log(`Tires URL: ${tiresURL}`);
             const token = localStorage.getItem('access');
-            
-            console.log(`API: ${api}`);
-            const response = await api.get('/api/tires/', {
+            const response = await api.get(tiresURL, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
-            console.log(`Response: ${response}`);
-            const fetchedTires = response.data;
+
+            const fetchedTires = await response.data;
             setTires(fetchedTires);
-            console.log(`Tires: ${fetchedTires}`);
         } catch (error) {
             console.log(error);
         }
-    };
-
-    const sendTireToReserve = (tireId) => {
-        // Implement logic to send tire to reserve
-        console.log(`Send tire with ID: ${tireId} to reserve`);
     };
 
     const indexOfLastTire = currentPage * tiresPerPage;
@@ -81,18 +58,21 @@ const TireReserve = () => {
         pageNumbers.push(i);
     }
 
+    // Rest of your component for searching and adding stock...
     return (
-        <div className={"tires-reserve-page"}>
+        <div>
+
             <div className="tires-product-filters">
                 <form onSubmit={(e) => handleFilterSubmit(e, filters, setTires, filterURL)}>
 
                     {/* Text based filters */}
+
                     <input type="text" name="rim" value={filters.rim} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Rim" />
                     <input type="text" name="code" value={filters.code} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Code" />
                     <input type="text" name="brand" value={filters.brand} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Brand" />
                     <input type="text" name="pattern" value={filters.pattern} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Pattern" />
-                    <input type="text" name="tire_size" value={filters.tire_size} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size" />
-                    <input type="text" name="tire_size_1" value={filters.tire_size_1} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size 1" />
+                    <input type="text" name="width" value={filters.width} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Width" />
+                    <input type="text" name="ratio" value={filters.ratio} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Ratio" />
 
                     {/* Add dropdown menus for additional filters */}
                     <select name="season" value={filters.season} onChange={(e) => handleFilterChange(e, filters, setFilters)}>
@@ -129,13 +109,11 @@ const TireReserve = () => {
                 {tires.length === 0 && <h1>No Tires Found</h1>}
             </div>
 
-            <div className='tires-reserve-container'>
-
+            <div className="tires-gallery">
                 {currentTires.map(tire => (
                     <TireProduct key={tire.id} tire={tire} />
                 ))}
             </div>
-
             <ul className="pagination">
                 {pageNumbers.map(number => (
                     <li key={number} className={number === currentPage ? 'active' : ''}>
@@ -147,27 +125,4 @@ const TireReserve = () => {
     );
 };
 
-export default TireReserve;
-
-
-{/*    <div className='search-results'>*/}
-{/*        {searchResults.map(tire => (*/}
-{/*            <div key={tire.id} className='tire-product'>*/}
-{/*                <img src='/transparent-tire.png' alt="Tire" />*/}
-{/*                <div className="tire-info">*/}
-{/*                    <h3>Brand: {tire.brand}</h3>*/}
-{/*                    <p>Season: {tire.season}</p>*/}
-{/*                    <p>Car Type: {tire.car_type}</p>*/}
-{/*                    <p>Size: {`${tire.width}/${tire.ratio}R${tire.rim}`}</p>*/}
-{/*                    <p>Speed Index: {tire.speed_index}</p>*/}
-{/*                    <p>Country: {tire.country}</p>*/}
-{/*                    <p>Price: {tire.price}</p>*/}
-{/*                    <p>Stock: {tire.stock}</p>*/}
-{/*                    <p className="more-details">&#128712; Check more details</p>*/}
-{/*                    <div className="action-buttons">*/}
-{/*                        <button onClick={() => sendTireToReserve(tire.id)}>Reserve Tire</button>*/}
-{/*                        /!* Add other action buttons here *!/*/}
-{/*                    </div>*/}
-{/*                </div>*/}
-{/*            </div>*/}
-{/*        ))}*/}
+export default AddStock;

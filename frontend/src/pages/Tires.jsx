@@ -26,19 +26,14 @@ function Tires() {
     const tiresURL = "/api/tires/";
     const filterURL = "/api/filter/";
 
-    console.log(`Tires URL: ${tiresURL}`);
-
     useEffect(() => {        
         fetchTires();
     }, [tiresURL]);
 
     const fetchTires = async () => {
         try {
-            console.log(`Tires URL: ${tiresURL}`);
             const token = localStorage.getItem('access');
-            
-            console.log(`API: ${api}`);
-            const response = await api.get('/api/tires/', {
+            const response = await api.get(tiresURL, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -48,10 +43,8 @@ function Tires() {
             if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
-            console.log(`Response: ${response}`);
             const fetchedTires = response.data;
             setTires(fetchedTires);
-            console.log(`Tires: ${fetchedTires}`);
         } catch (error) {
             console.log(error);
         }

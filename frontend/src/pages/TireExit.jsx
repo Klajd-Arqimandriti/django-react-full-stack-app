@@ -3,6 +3,9 @@
 import {useEffect, useState} from 'react';
 import {handleFilterChange, handleFilterSubmit} from "../filterUtils";
 import TireProduct from "./TireProduct";
+
+import api from "../api";
+
 import '../styles/TireExit.css';
 
 function TireExit() {
@@ -15,40 +18,36 @@ function TireExit() {
     const [tiresPerPage] = useState(20);
 
     const [filters, setFilters] = useState({
-        brand: '',
-        rim: '',
-        code: '',
-        pattern: '',
+        tire_size_1: '',
         tire_size: '',
-        car_type: '',
+        brand: '',
+        pattern: '',
+        code: '',
         location: '',
-        width: '',
-        ratio: ''
     });
 
     const tiresURL = "/api/tires/";
     const filterURL = "/api/filter/";
 
-    useEffect(() => {
+    useEffect(() => {        
         fetchTires();
     }, [tiresURL]);
 
     const fetchTires = async () => {
         try {
             const token = localStorage.getItem('access');
-            const response = await fetch(tiresURL, {
+            const response = await api.get(tiresURL, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
-            if (!response.ok) {
+    
+            if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
-
-            const fetchedTires = await response.json();
+            const fetchedTires = response.data;
             setTires(fetchedTires);
-            // setIsLoading(false);
         } catch (error) {
             console.log(error);
         }
@@ -74,9 +73,8 @@ function TireExit() {
                     <input type="text" name="code" value={filters.code} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Code" />
                     <input type="text" name="brand" value={filters.brand} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Brand" />
                     <input type="text" name="pattern" value={filters.pattern} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Pattern" />
-                    <input type="text" name="brand" value={filters.brand} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Brand" />
-                    <input type="text" name="width" value={filters.width} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Width" />
-                    <input type="text" name="ratio" value={filters.ratio} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Ratio" />
+                    <input type="text" name="tire_size" value={filters.tire_size} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size" />
+                    <input type="text" name="tire_size_1" value={filters.tire_size_1} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Tire Size 1" />
 
                     {/* Add dropdown menus for additional filters */}
                     <select name="season" value={filters.season} onChange={(e) => handleFilterChange(e, filters, setFilters)}>

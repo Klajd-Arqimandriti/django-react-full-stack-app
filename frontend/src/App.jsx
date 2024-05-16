@@ -6,7 +6,10 @@ import Register from './pages/Register';
 import Sidebar from './pages/Sidebar';
 import Home from './pages/Home';
 import Tires from './pages/Tires';
+import TireEntryPage from './pages/TireEntryPage';
 import TireEntry from './pages/TireEntry';
+import HotelTireEntry from './pages/HotelTireEntry';
+import AddStock from './pages/AddStock';
 import TireExit from './pages/TireExit';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -38,7 +41,12 @@ function App() {
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/tires" element={<Tires />} />
         <Route path="/warehouse" element={<Warehouse />} />
-        <Route path="/tire-entry" element={<TireEntry />} />
+        <Route path="/tire-entry" element={<TireEntryPage />} />
+        <Route path="/add-stock" element={<AddStock />} />
+        <Route path="/add-new-tire" element={<TireEntry />} />
+        <Route path="/add-tire-hotel" element={<HotelTireEntry />} />
+        
+        
         <Route path="/tire-exit" element={<TireExit />} />
         <Route path="/tire-reserve" element={<TireReserve />} />
         <Route path="/reserved-tires" element={<ReservedTires />} />

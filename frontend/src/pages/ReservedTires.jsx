@@ -14,16 +14,8 @@ const ReservedTires = () => {
     const [tiresPerPage] = useState(20);
 
     const [filters, setFilters] = useState({
-        brand: '',
-        rim: '',
-        code: '',
-        pattern: '',
-        tire_size: '',
-        car_type: '',
         location: '',
-        width: '',
-        ratio: '',
-        customer_name: ''
+        customer_name: '',
     });
 
     const reservedTiresURL = "/api/reserved_tires/";
@@ -38,7 +30,6 @@ const ReservedTires = () => {
         try {
             const token = localStorage.getItem('access');
             
-            console.log(`API: ${api}`);
             const response = await api.get(reservedTiresURL, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -49,10 +40,8 @@ const ReservedTires = () => {
             if (!response.status === 200) {
                 throw new Error('Something went wrong!');
             }
-            console.log(`Response: ${response}`);
             const fetchedReservedTires = response.data;
             setReservedTires(fetchedReservedTires);
-            console.log(`Tires: ${fetchedTires}`);
         } catch (error) {
             console.log(error);
         }
@@ -73,14 +62,8 @@ const ReservedTires = () => {
                     <form onSubmit={(e) => handleFilterSubmit(e, filters, setReservedTires, filterURL)}>
 
                         {/* Text based filters */}
-
-                        <input type="text" name="rim" value={filters.rim} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Rim" />
-                        <input type="text" name="code" value={filters.code} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Code" />
-                        <input type="text" name="brand" value={filters.brand} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Brand" />
-                        <input type="text" name="pattern" value={filters.pattern} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Pattern" />
-                        <input type="text" name="width" value={filters.width} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Width" />
-                        <input type="text" name="ratio" value={filters.ratio} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Ratio" />
-                        <input type="text" name="customer_name" value={filters.customer_name} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Customer Name" disabled/>
+                        <input type="text" name="location" value={filters.location} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Location" />
+                        <input type="text" name="customer_name" value={filters.customer_name} onChange={(e) => handleFilterChange(e, filters, setFilters)} placeholder="Customer Name" />
 
                         {/* Add dropdown menus for additional filters */}
                         <select name="season" value={filters.season} onChange={(e) => handleFilterChange(e, filters, setFilters)}>

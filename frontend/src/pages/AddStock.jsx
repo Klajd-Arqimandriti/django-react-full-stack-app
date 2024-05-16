@@ -13,17 +13,13 @@ const AddStock = () => {
 
     const tiresURL = '/api/tires/';
     const filterURL = '/api/filter/';
-
     const [filters, setFilters] = useState({
-        brand: '',
-        rim: '',
-        code: '',
-        pattern: '',
+        tire_size_1: '',
         tire_size: '',
-        car_type: '',
+        brand: '',
+        pattern: '',
+        code: '',
         location: '',
-        width: '',
-        ratio: ''
     });
 
     useEffect(() => {

@@ -172,7 +172,7 @@ def reserve_tire(request, tire_id):
                     tire_id=tire,
                     transaction_type='Reservation',
                     tire_amount=reserved_quantity,
-                    customer_name=contact_phone,
+                    customer_name=customer_name,
                     contact_phone=contact_phone
                 )
 
@@ -200,6 +200,7 @@ def unreserve_tire(request, tire_id):
             reserved_tire = ReservedTire.objects.get(id=tire_id)
             tire_id = reserved_tire.tire_id
             tire = Tire.objects.get(id=tire_id)
+            tire.reserved_amount -= reserved_tire.reserved_amount
             tire.stock += reserved_tire.reserved_amount
             tire.save()
             reserved_tire.delete()

@@ -207,6 +207,9 @@ function TireProduct( tire ) {
                 });
             }
         })
+        .then(() => {
+            window.location.reload();
+        })
         .catch(error => {
             console.error('Error selling tire:', error);
         });

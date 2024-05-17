@@ -14,6 +14,8 @@ function TireProduct( tire ) {
     const location = useLocation();
     const pathname = location.pathname;
 
+    const [loading, setLoading] = useState(false);
+
     const [showInfoModal, setShowInfoModal] = useState(false);
     const [showReserveModal, setShowReserveModal] = useState(false);
     const [showSellModal, setShowSellModal] = useState(false);
@@ -101,6 +103,7 @@ function TireProduct( tire ) {
     // const csrftoken = getCookie('csrftoken'); // Implement getCookie function to retrieve the CSRF token from cookies
 
     const sendTireToReserve = (tireId, reservedQuantity, customerName, contactPhone) => {
+        setLoading(true);
         let url = `/api/reserveTire/${tireId}/`;
         api.post(url, {
             reservedQuantity,
@@ -122,7 +125,10 @@ function TireProduct( tire ) {
         })
         .catch(error => {
             console.error('Error sending tire to reserve:', error);
-        });
+        })
+        .finally(() => {
+            setLoading(false);
+        })
     };
 
     const unReserveTire = (tireId) => {
@@ -391,7 +397,7 @@ function TireProduct( tire ) {
                                 <>
                                     <div className='reservation-buttons'>
                                         <button className='plus-btn' onClick={increaseReserveQuantity}>+</button>
-                                        <button className={'reserve-btn'} onClick={() => sendTireToReserve(tire.tire.id, reserveQuantity, customerName, contactPhone)} disabled={tire.tire.stock === 0}>Reserve</button>
+                                        <button className={'reserve-btn'} onClick={() => sendTireToReserve(tire.tire.id, reserveQuantity, customerName, contactPhone)} disabled={loading || tire.tire.stock === 0}>{loading ? 'Reserving...' : 'Reserve'}</button>
                                         <button className='minus-btn' onClick={decreaseReserveQuantity}>-</button>
                                     </div>
 
@@ -439,7 +445,7 @@ function TireProduct( tire ) {
                         <input type="text" id="contactPhone" name="contactPhone" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} />
                     </div>
 
-                    <div className="secondary-action-buttons">
+                    {/* <div className="secondary-action-buttons">
                         {tireServedInReserveATire() && (
                             <>
                                 <div className='reservation-buttons'>
@@ -450,7 +456,7 @@ function TireProduct( tire ) {
                                 <p>Reserved quantity: {reserveQuantity}</p>
                             </>
                         )}
-                    </div>
+                    </div> */}
 
 
                     <div className="secondary-action-buttons">

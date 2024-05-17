@@ -299,7 +299,7 @@ def sell_tire(request, tire_id):
                         tire_obj = Tire.objects.get(id=reserved_tire.tire_id)
                         Transaction.objects.create(
                             tire_id=tire_obj,
-                            transaction_type='Exit',
+                            transaction_type='Sale',
                             tire_amount=sell_quantity,
                             customer_name=customer_name,
                             contact_phone=contact_phone
@@ -355,3 +355,15 @@ def add_tire_stock(request, tire_id):
             return JsonResponse({'message': 'Tire not found'}, status=status.HTTP_404_NOT_FOUND)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def download_excel(request):
+    pass
+
+
+@csrf_exempt
+@api_view(['GET'])
+def download_pdf(request):
+    pass

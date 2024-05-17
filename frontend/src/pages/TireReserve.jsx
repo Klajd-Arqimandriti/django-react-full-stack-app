@@ -40,7 +40,7 @@ const TireReserve = () => {
 
     useEffect(() => {        
         fetchTires();
-    }, [tiresURL]);
+    }, []);
 
     const fetchTires = async () => {
         try {
@@ -65,11 +65,6 @@ const TireReserve = () => {
         } catch (error) {
             console.log(error);
         }
-    };
-
-    const sendTireToReserve = (tireId) => {
-        // Implement logic to send tire to reserve
-        console.log(`Send tire with ID: ${tireId} to reserve`);
     };
 
     const indexOfLastTire = currentPage * tiresPerPage;

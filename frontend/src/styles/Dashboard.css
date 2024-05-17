@@ -1,0 +1,5 @@
+.greyed-out-button {
+    background-color: #ccc; /* Grey background */
+    color: #666; /* Dark grey text */
+    cursor: not-allowed; /* Disable pointer events */
+}

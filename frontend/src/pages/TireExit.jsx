@@ -31,7 +31,7 @@ function TireExit() {
 
     useEffect(() => {        
         fetchTires();
-    }, [tiresURL]);
+    }, []);
 
     const fetchTires = async () => {
         try {

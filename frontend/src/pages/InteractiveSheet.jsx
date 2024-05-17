@@ -5,6 +5,7 @@ import '../styles/InteractiveSheet.css';
 
 import { handleInteractiveSheetFilterChange } from "../filterUtils";
 import { handleFilterSubmit } from "../filterUtils";
+import { downloadExcel, downloadPDF } from "../utils";
 
 function InteractiveSheet( isEditable ) {
 
@@ -148,7 +149,6 @@ function InteractiveSheet( isEditable ) {
             });
         });
     };
-
 
 
     const downloadExcel = async () => {
